@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
             rigid = GetComponent<Rigidbody>( );
         }
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
+        rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         Animator anim = GetComponent<Animator>( );
         if ( !anim ) {
             gameObject.AddComponent<Animator>( );
