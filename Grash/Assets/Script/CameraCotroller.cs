@@ -8,7 +8,7 @@ public class CameraCotroller : MonoBehaviour {
     Vector3 _player_to_camera_pos;
 
     void Awake( ) {
-        player = GameObject.Find("player");
+        player = GameObject.Find("Player");
     }
 
 	// Use this for initialization

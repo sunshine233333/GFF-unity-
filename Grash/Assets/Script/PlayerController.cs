@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
         STATE_JUMP,
         STATE_FALL,
         STATE_LAND,
+        STATE_TURBO,
+        STATE_REVERSAL
     }
 
     private Vector3 _move_force = new Vector3( 20, 0, 0);
@@ -19,47 +21,54 @@ public class PlayerController : MonoBehaviour {
 
     private float _hover_speed = 5.0f;
     private float _max_speed = 30.0f;
+    private float _turbo_continue_max_time = 0.5f;
 
     private Vector3 _force = new Vector3( 0, 0, 0 );
     private STATE _state;
     private STATE _before_state;
-
-
+    private float _turbo_continue_time = -1;
+   
     void Awake( ) {
         Rigidbody rigid = GetComponent<Rigidbody>( );
         if ( !rigid ) {
-            gameObject.AddComponent<Rigidbody>();
-            rigid = GetComponent<Rigidbody>();
+            gameObject.AddComponent<Rigidbody>( );
+            rigid = GetComponent<Rigidbody>( );
         }
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
         Animator anim = GetComponent<Animator>( );
         if ( !anim ) {
-            gameObject.AddComponent<Animator>();
+            gameObject.AddComponent<Animator>( );
         }
 
     }
 
-	void Start () {
-		
+	void Start ( ) {
+        _turbo_continue_time = _turbo_continue_max_time * 60;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ( ) {
         checkDeviceInput( );
-        speedLimit();
+        moveUpdate();
         switchState( );
         switchAnimation( );
         
 
 	}
 
-    void speedLimit() { 
+    void moveUpdate( ) { 
         Rigidbody rigid = gameObject.GetComponent< Rigidbody >( );
         Vector3 velocity = rigid.velocity;
         if ( velocity.x > _max_speed ) {
             velocity.x = _max_speed;
             rigid.velocity = velocity;
         }
+        if ( _state == STATE.STATE_TURBO ) {
+            rigid.useGravity = false;
+        } else {
+            rigid.useGravity = true;            
+        }
+        _turbo_continue_time++;
     }
 
     void checkDeviceInput( ) {
@@ -106,14 +115,20 @@ public class PlayerController : MonoBehaviour {
         if ( anim_state.IsName( "Fall" ) && _state != STATE.STATE_FALL) {
             _state = STATE.STATE_LAND;
         }
+        if ( _force == _turbo_force || _turbo_continue_time < _turbo_continue_max_time * 60 ) {
+            _state = STATE.STATE_TURBO;
+        }
+        if ( _before_state != STATE.STATE_TURBO && _state == STATE.STATE_TURBO ) {
+            _turbo_continue_time = 0;
+        }
         Debug.Log( velocity.y );
         _before_state = _state;
     }
 
-    void switchAnimation() {
+    void switchAnimation( ) {
        
         Animator anim = gameObject.GetComponent<Animator>( );
-        resetAnimation();
+        resetAnimation( );
         switch ( _state ) { 
             case STATE.STATE_RUN:
                 anim.SetBool( "isRun", true );
@@ -122,13 +137,16 @@ public class PlayerController : MonoBehaviour {
                 anim.SetBool( "isHover", true );
                 break;
             case STATE.STATE_JUMP:
-                anim.SetBool("isJump", true);
+                anim.SetBool( "isJump", true );
                 break;
             case STATE.STATE_FALL:
-                anim.SetBool("isFall", true);
+                anim.SetBool( "isFall", true );
                 break;
             case STATE.STATE_LAND:
-                anim.SetBool("isLand", true);
+                anim.SetBool( "isLand", true );
+                break;
+            case STATE.STATE_TURBO:
+                anim.SetBool( "isTurbo", true );
                 break;
             default:
                 resetAnimation( );
@@ -143,6 +161,7 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isJump", false );
         anim.SetBool( "isFall", false );
         anim.SetBool( "isLand", false );
+        anim.SetBool( "isTurbo", false );
 
 
     }
