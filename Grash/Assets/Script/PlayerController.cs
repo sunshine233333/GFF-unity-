@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     private Vector3 _force = new Vector3( 0, 0, 0 );
     private STATE _state;
     private STATE _before_state;
+	private bool _is_reversal = false;
     private float _turbo_continue_time = -1;
    
     void Awake( ) {
@@ -83,17 +84,22 @@ public class PlayerController : MonoBehaviour {
         if ( Input.GetKey( KeyCode.X ) ) {
             _force = _turbo_force;
         }
-        if ( Input.GetKeyDown( KeyCode.C ) ) {
-            _jump_force.y *= -1;
-            Physics.gravity = new Vector3( 0, Physics.gravity.y * -1, 0 );
-            transform.Rotate( Vector3.forward, 180 );
-        }
+		if (Input.GetKeyDown (KeyCode.C)) {
+			_jump_force.y *= -1;
+			Physics.gravity = new Vector3 (0, Physics.gravity.y * -1, 0);
+			transform.position = new Vector3 (transform.position.x, transform.position.y + (Physics.gravity.normalized.y), transform.position.z);
+			transform.Rotate (Vector3.forward, 180);
+			_is_reversal = true;
+		} else {
+			_is_reversal = false;
+		}
 
         gameObject.GetComponent< Rigidbody >( ).AddForce( _force );
     }
 
     void switchState( ) {
-      
+		Animator anim = gameObject.GetComponent<Animator>( );
+		AnimatorStateInfo anim_state = anim.GetCurrentAnimatorStateInfo( 0 );
         _state = STATE.STATE_WAIT;
         Vector3 velocity = gameObject.GetComponent< Rigidbody >( ).velocity;
         if ( velocity.x > 0 ) {
@@ -107,13 +113,15 @@ public class PlayerController : MonoBehaviour {
         if ( is_jump ) {
             _state = STATE.STATE_JUMP;
         }
+		if ( _is_reversal ) {
+			_state = STATE.STATE_REVERSAL;
+		}
+
         bool is_fall = ( !is_jump ) && ( Mathf.Abs( velocity.y ) > 1.0f ) ;
         if ( is_fall ) {
             _state = STATE.STATE_FALL;
         }
-        Animator anim = gameObject.GetComponent<Animator>( );
-        AnimatorStateInfo anim_state = anim.GetCurrentAnimatorStateInfo( 0 );
-        if ( anim_state.IsName( "Fall" ) && _state != STATE.STATE_FALL) {
+		if ( anim_state.IsName( "Fall" ) && ( _state == STATE.STATE_WAIT || _state == STATE.STATE_RUN || _state == STATE.STATE_HOVER ) ) {
             _state = STATE.STATE_LAND;
         }
         if ( _force == _turbo_force || _turbo_continue_time < _turbo_continue_max_time * 60 ) {
@@ -149,6 +157,9 @@ public class PlayerController : MonoBehaviour {
             case STATE.STATE_TURBO:
                 anim.SetBool( "isTurbo", true );
                 break;
+			case STATE.STATE_REVERSAL:
+				anim.SetBool( "isReversal", true );
+				break;
             default:
                 resetAnimation( );
                 break;
@@ -163,6 +174,8 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isFall", false );
         anim.SetBool( "isLand", false );
         anim.SetBool( "isTurbo", false );
+		anim.SetBool( "isReversal", false );
+
 
 
     }
