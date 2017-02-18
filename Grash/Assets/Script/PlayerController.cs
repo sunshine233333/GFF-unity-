@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
     private Vector3 _jump_force = new Vector3( 0, 20, 0 );
     private Vector3 _turbo_force = new Vector3( 30, 0, 0);
 
+	private GameObject _input;
+
     private float _hover_speed = 5.0f;
     private float _max_speed = 30.0f;
     private float _turbo_continue_max_time = 0.5f;
@@ -41,6 +43,10 @@ public class PlayerController : MonoBehaviour {
         if ( !anim ) {
             gameObject.AddComponent<Animator>( );
         }
+		_input = GameObject.Find ("Input");
+		if ( !_input ) {
+			_input = ( GameObject )Instantiate( Resources.Load( "Prefab/Input" ) );
+		}
 
     }
 
@@ -74,17 +80,18 @@ public class PlayerController : MonoBehaviour {
     }
 
     void checkDeviceInput( ) {
+		InputManager input = _input.GetComponent< InputManager > ( );
         _force = new Vector3( 0, 0, 0 );
-        if ( Input.GetKey( KeyCode.RightArrow ) ) {
+		if ( input.isHitKey( KeyCode.RightArrow ) ) {
             _force += _move_force;
         }
-        if ( Input.GetKey( KeyCode.Z ) ) {
+		if ( input.isHitKey( KeyCode.Z ) ) {
             _force += _jump_force;
         }
-        if ( Input.GetKey( KeyCode.X ) ) {
+		if ( input.isHitKey( KeyCode.X ) ) {
             _force = _turbo_force;
         }
-		if (Input.GetKeyDown (KeyCode.C)) {
+		if ( input.isHitKeyDown( KeyCode.C )) {
 			_jump_force.y *= -1;
 			Physics.gravity = new Vector3 (0, Physics.gravity.y * -1, 0);
 			transform.position = new Vector3 (transform.position.x, transform.position.y + (Physics.gravity.normalized.y), transform.position.z);
@@ -130,7 +137,7 @@ public class PlayerController : MonoBehaviour {
         if ( _before_state != STATE.STATE_TURBO && _state == STATE.STATE_TURBO ) {
             _turbo_continue_time = 0;
         }
-        Debug.Log( velocity.y );
+        //Debug.Log( velocity.y );
         _before_state = _state;
     }
 
