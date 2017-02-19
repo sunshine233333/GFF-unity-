@@ -60,8 +60,6 @@ public class PlayerController : MonoBehaviour {
         moveUpdate();
         switchState( );
         switchAnimation( );
-        
-
 	}
 
     void moveUpdate( ) { 
