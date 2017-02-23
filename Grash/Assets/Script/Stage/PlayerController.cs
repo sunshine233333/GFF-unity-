@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnCollisionEnter( Collision collision ) {
-        if (collision.collider.tag == "Debri") {
+        if ( collision.collider.tag == "Debri"  ) {
             _is_hit_debri = true;
         }
         _is_hit_any = true;
