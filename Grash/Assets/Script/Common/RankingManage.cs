@@ -5,8 +5,11 @@ using UnityEngine;
 public class RankingManage : MonoBehaviour {
 
     private const int MAX_RANK_NUM = 3;
+    private const int MAX_STAGE_NUM = 3;
+
     private float[ ] _rank;
-    private const string RANK_KEY = "ranking";
+
+    private const string[  ] RANK_KEY = new string[ MAX_STAGE_NUM ] { "ranking1", "ranking2", "ranking3" };
 
 	// Use this for initialization
 	void Awake ( ) {
@@ -21,8 +24,8 @@ public class RankingManage : MonoBehaviour {
 	    
     }
 
-   public void resetRanking( ) {
-        string ranking = PlayerPrefs.GetString( RANK_KEY );
+   public void resetRanking( int stage ) {
+        string ranking = PlayerPrefs.GetString( RANK_KEY[ stage ] );
         if ( ranking.Length > 0 ) {
             var _score = ranking.Split( "," [ 0 ] );
             for ( int i = 0; i < _score.Length && i < MAX_RANK_NUM; i++ ) {
@@ -31,7 +34,7 @@ public class RankingManage : MonoBehaviour {
         }
     }
 
-    public void saveRanking( float rank ) { 
+    public void saveRanking( int stage, float rank ) { 
         float _tmp = 0.0f;
         for ( int i = 0 ; i < MAX_RANK_NUM; i++ ) {
             if ( _rank[ i ] > rank ) {
@@ -46,7 +49,7 @@ public class RankingManage : MonoBehaviour {
         }
         // 配列を文字列に変換して PlayerPrefs に格納
         string ranking_string = string.Join( ",", string_rank );
-        PlayerPrefs.SetString( RANK_KEY, ranking_string );
+        PlayerPrefs.SetString( RANK_KEY[ stage ], ranking_string );
         PlayerPrefs.Save( );
     }
 
