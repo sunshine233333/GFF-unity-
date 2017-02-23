@@ -36,7 +36,7 @@ public class Timer : MonoBehaviour {
         time_text.text = text;
 	}
 
-    public void seGameStart( ) {
+    public void setGameStart( ) {
         _is_start_game = true;
     }
 

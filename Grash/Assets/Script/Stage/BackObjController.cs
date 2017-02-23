@@ -34,5 +34,4 @@ public class BackObjController : MonoBehaviour {
         }
         transform.Rotate( new Vector3( 0, ROTATE_VALUE, 0 ) );
     }
-
 }
