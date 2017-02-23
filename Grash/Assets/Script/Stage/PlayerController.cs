@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour {
         STATE_REVERSAL
     }
 
-    private Vector3 _move_force = new Vector3( 20, 0, 0);
+    public Vector3 _velocity;
+
+    private Vector3 _move_force = new Vector3( 20, 0, 0 );
     private Vector3 _jump_force = new Vector3( 0, 50, 0 );
     private Vector3 _turbo_force = new Vector3( 200, 0, 0);
 
@@ -62,6 +64,8 @@ public class PlayerController : MonoBehaviour {
         moveUpdate();
         switchState( );
         switchAnimation( );
+
+        _velocity = GetComponent<Rigidbody>( ).velocity;
 
 	}
 
@@ -192,9 +196,5 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isLand", false );
         anim.SetBool( "isTurbo", false );
 		anim.SetBool( "isReversal", false );
-
-
-
     }
-
 }

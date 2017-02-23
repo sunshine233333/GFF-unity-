@@ -32,7 +32,7 @@ public class InputManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void LateUpdate () {
+	void Update ( ) {
 		_time++;
 		if ( _max_time > _time ) {
 			return;
@@ -94,7 +94,7 @@ public class InputManager : MonoBehaviour {
 		default:
 			break;
 		}
-		Debug.Log (touch_key);
+		
 		return Input.GetKey ( key ) || touch_key;
 	}
 	public bool isHitKeyDown( KeyCode key ) {
@@ -120,6 +120,7 @@ public class InputManager : MonoBehaviour {
 		default:
 			break;
 		}
+        Debug.Log ( touch_key );
 		return Input.GetKeyDown ( key ) || ( touch_key && !before_key );
 	}
 

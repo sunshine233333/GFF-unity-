@@ -19,7 +19,7 @@ public class TitleManager : MonoBehaviour {
     private int _fade_counter;
     private int FADE_MAX_COUNT = 30;
 
-    void Awake() {
+    void Awake( ) {
         //プラットフォームのチェック
 		//IOS or Android
 		if ( Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer ) {
