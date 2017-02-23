@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public enum STATE {
-        STATE_READY,
-        STATE_PLAY,
-        STATE_CLEAR
+    public enum PHASE {
+        PHASE_READY,
+        PHASE_PLAY,
+        PHASE_CLEAR
     }
 
     private const int SPRITE_MAX = 4;
     public Sprite[] CountSprite = new Sprite[ SPRITE_MAX ];
 
     private float _count_time = SPRITE_MAX;
-    private STATE _state;
+    private PHASE _phase;
 
     private GameObject _goal;
     private GameObject _player;
@@ -30,14 +30,19 @@ public class GameManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start ( ) {
-        _state = STATE.STATE_READY;
+        _phase = PHASE.PHASE_READY;
 	}
 	
 	// Update is called once per frame
 	void Update ( ) {
-        switch ( _state ) {
-            case STATE.STATE_READY:
+        switch ( _phase ) {
+            case PHASE.PHASE_READY:
                 ReadyCount( );
+                break;
+            case PHASE.PHASE_PLAY:
+                updatePlay( );
+                break;
+            case PHASE.PHASE_CLEAR:
                 break;
         }
 	}
@@ -46,14 +51,33 @@ public class GameManager : MonoBehaviour {
         _count_time -= Time.deltaTime;
         _ready_sprite.sprite = CountSprite[ ( int )_count_time ];
         if ( _count_time <= 0.0f ) {
-            _state = STATE.STATE_PLAY;
+            _phase = PHASE.PHASE_PLAY;
             Timer timer = _time.GetComponent<Timer>( );
             timer.setGameStart( );
             _ready_sprite.gameObject.active = false;
         }
     }
 
-    public STATE getState( ) {
-        return _state;
+    private void updatePlay( ) {
+        float player_x = _player.transform.position.x;
+        float goal_x = _goal.transform.position.x;
+
+        if ( player_x >= goal_x ) {
+            _phase = PHASE.PHASE_CLEAR;
+            Timer timer = _time.GetComponent<Timer>( );
+            timer.setGameEnd( );
+        }
+
+    }
+
+    private void updateClear( ) {
+        Vector3 player_velocioty = _player.GetComponent<Rigidbody>( ).velocity;
+        if ( player_velocioty != Vector3.zero ) {
+            return;
+        }
+    }
+
+    public PHASE getPhase( ) {
+        return _phase;
     }
 }

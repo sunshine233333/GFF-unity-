@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ( ) {
         GameManager gm = GameObject.Find( "GameManager" ).GetComponent<GameManager>( );
-        if ( gm.getState( ) == GameManager.STATE.STATE_PLAY ) {
+        if ( gm.getPhase( ) == GameManager.PHASE.PHASE_PLAY ) {
             checkDeviceInput( );
         }
         moveUpdate( );
