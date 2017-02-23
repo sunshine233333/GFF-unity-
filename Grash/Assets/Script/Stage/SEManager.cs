@@ -7,6 +7,7 @@ public class SEManager : MonoBehaviour {
     public enum SE { 
         SE_GRAVITY,
         SE_TRUBO,
+        SE_COUNT,
         SE_MAX,
     };
 
@@ -16,13 +17,13 @@ public class SEManager : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ( ) {
         _souce = gameObject.GetComponent<AudioSource>( );
         _before_se = (int)SE.SE_MAX;
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ( ) {
 	    
 	}
 

@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
 	}
 
     private void ReadyCount( ) {
+
         _count_time -= Time.deltaTime;
         _ready_sprite.sprite = CountSprite[ ( int )_count_time ];
         if ( _count_time <= 0.0f ) {
