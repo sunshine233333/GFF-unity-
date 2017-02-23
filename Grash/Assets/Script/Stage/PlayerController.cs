@@ -16,21 +16,23 @@ public class PlayerController : MonoBehaviour {
     }
 
     private Vector3 _move_force = new Vector3( 20, 0, 0);
-    private Vector3 _jump_force = new Vector3( 0, 20, 0 );
-    private Vector3 _turbo_force = new Vector3( 30, 0, 0);
+    private Vector3 _jump_force = new Vector3( 0, 50, 0 );
+    private Vector3 _turbo_force = new Vector3( 200, 0, 0);
 
 	private GameObject _input;
 
     private float _hover_speed = 5.0f;
     private float _max_speed = 30.0f;
     private float _turbo_continue_max_time = 0.5f;
+    private float _max_jump_force = 5.0f;
+
 
     private Vector3 _force = new Vector3( 0, 0, 0 );
     private STATE _state;
     private STATE _before_state;
 	private bool _is_reversal = false;
+    private bool _can_jump = true;
     private float _turbo_continue_time = -1;
-   
     void Awake( ) {
         Rigidbody rigid = GetComponent<Rigidbody>( );
         if ( !rigid ) {
@@ -60,6 +62,7 @@ public class PlayerController : MonoBehaviour {
         moveUpdate();
         switchState( );
         switchAnimation( );
+
 	}
 
     void moveUpdate( ) { 
@@ -80,13 +83,21 @@ public class PlayerController : MonoBehaviour {
     void checkDeviceInput( ) {
 		InputManager input = _input.GetComponent< InputManager > ( );
         _force = new Vector3( 0, 0, 0 );
+        Vector3 velocity = gameObject.GetComponent< Rigidbody >( ).velocity;
 		if ( input.isHitKey( KeyCode.RightArrow ) ) {
             _force += _move_force;
         }
-		if ( input.isHitKey( KeyCode.Z ) ) {
+
+        bool is_fall = ( !( ( velocity.y > 0 && _jump_force.y > 0 ) ||
+                         ( velocity.y < 0 && _jump_force.y < 0 ) ) && ( Mathf.Abs( velocity.y ) > 1.0f ) );
+		
+        if ( input.isHitKey( KeyCode.Z ) && !is_fall && Mathf.Abs( velocity.y ) < _max_jump_force && _can_jump ) {
             _force += _jump_force;
         }
-		if ( input.isHitKey( KeyCode.X ) ) {
+        if ( Mathf.Abs( velocity.y ) >= _max_jump_force && !is_fall ) {
+            _can_jump = false;
+        }
+        if (input.isHitKeyDown( KeyCode.X ) ) {
             _force = _turbo_force;
         }
 		if ( input.isHitKeyDown( KeyCode.C )) {
@@ -128,6 +139,7 @@ public class PlayerController : MonoBehaviour {
         }
 		if ( anim_state.IsName( "Fall" ) && ( _state == STATE.STATE_WAIT || _state == STATE.STATE_RUN || _state == STATE.STATE_HOVER ) ) {
             _state = STATE.STATE_LAND;
+            _can_jump = true;
         }
         if ( _force == _turbo_force || _turbo_continue_time < _turbo_continue_max_time * 60 ) {
             _state = STATE.STATE_TURBO;
