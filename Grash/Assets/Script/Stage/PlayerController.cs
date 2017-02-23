@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour {
     private float _turbo_continue_max_time = 0.5f;
     private float _max_jump_force = 5.0f;
 
-
     private Vector3 _force = new Vector3( 0, 0, 0 );
     private STATE _state;
     private STATE _before_state;
@@ -196,5 +195,9 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isLand", false );
         anim.SetBool( "isTurbo", false );
 		anim.SetBool( "isReversal", false );
+    }
+
+    public bool isReversal( ) {
+        return _jump_force.y < 0;
     }
 }
