@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\Common\RankingManage.cs" />
+    <Compile Include="Assets\Script\Result\ResultManager.cs" />
     <Compile Include="Assets\Script\Result\VeiResult.cs" />
     <Compile Include="Assets\Script\Stage\BGMManager.cs" />
     <Compile Include="Assets\Script\Stage\BackObjController.cs" />
