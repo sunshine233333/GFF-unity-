@@ -5,14 +5,17 @@ using UnityEngine.UI;
 
 public class VeiResult : MonoBehaviour {
 
+    public int StageNum;
     private Text _text;
     private RankingManage _rank;
 
 	// Use this for initialization
-	void Start () {
-        _text = GetComponent<Text>();
+	void Start ( ) {
+        _text = GetComponent<Text>( );
         _rank = GameObject.Find("GameManager").GetComponent<RankingManage>( );
-        _rank.resetRanking( );
+        if ( StageNum <= 2 ) {
+            _rank.resetRanking( StageNum );
+        }
 	}
 	
 	// Update is called once per frame

@@ -53,4 +53,8 @@ public class Timer : MonoBehaviour {
         _is_start_game = false;
         _is_end_game = true;
     }
+
+    public float getTime( ) {
+        return _time;
+    }
 }

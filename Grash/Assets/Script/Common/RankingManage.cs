@@ -9,7 +9,7 @@ public class RankingManage : MonoBehaviour {
 
     private float[ ] _rank;
 
-    private const string[  ] RANK_KEY = new string[ MAX_STAGE_NUM ] { "ranking1", "ranking2", "ranking3" };
+    private string[  ] RANK_KEY = new string[ MAX_STAGE_NUM ] { "ranking1", "ranking2", "ranking3" };
 
 	// Use this for initialization
 	void Awake ( ) {
