@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour {
         STATE_FALL,
         STATE_LAND,
         STATE_TURBO,
-        STATE_REVERSAL
+        STATE_REVERSAL,
+        STATE_CRASH
     }
 
     public Vector3 _velocity;
