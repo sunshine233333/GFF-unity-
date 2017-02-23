@@ -42,8 +42,6 @@ public class InputManager : MonoBehaviour {
 		_before_hit_key_z = _hit_key_z;
 		_before_hit_key_c = _hit_key_c;
 		_before_hit_key_x = _hit_key_x;
-		_hit_key_x = false;
-		_hit_key_c = false;
 	}
 
 	public void hitRightArrow( ) {
@@ -62,9 +60,17 @@ public class InputManager : MonoBehaviour {
 		_hit_key_z = true;
 	}
 
+    public void hitKeyXStop( ) {
+        _hit_key_x = false;
+    }
+
 	public void hitKeyX( ) {
 		_hit_key_x = true;
 	}
+
+    public void hitKeyCStop( ) {
+        _hit_key_c = false;
+    }
 
 	public void hitKeyC( ) {
 		_hit_key_c = true;
@@ -116,4 +122,5 @@ public class InputManager : MonoBehaviour {
 		}
 		return Input.GetKeyDown ( key ) || ( touch_key && !before_key );
 	}
+
 }
