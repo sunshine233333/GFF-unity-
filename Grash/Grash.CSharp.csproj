@@ -81,6 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Common\RankingManage.cs" />
+    <Compile Include="Assets\Script\Result\VeiResult.cs" />
     <Compile Include="Assets\Script\Stage\BGMManager.cs" />
     <Compile Include="Assets\Script\Stage\BackObjController.cs" />
     <Compile Include="Assets\Script\Stage\CameraCotroller.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Assets\Script\Stage\InputManager.cs" />
     <Compile Include="Assets\Script\Stage\PlayerColorChange.cs" />
     <Compile Include="Assets\Script\Stage\PlayerController.cs" />
-    <Compile Include="Assets\Script\Stage\RankingManage.cs" />
     <Compile Include="Assets\Script\Stage\SEManager.cs" />
     <Compile Include="Assets\Script\Stage\Timer.cs" />
     <Compile Include="Assets\Script\StageSelect\StageSelectMain.cs" />

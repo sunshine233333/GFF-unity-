@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour {
     private bool _can_jump = true;
     private float _turbo_continue_time = -1;
 
+    private bool _is_hit_debri = false;
+
     void Awake( ) {
         Rigidbody rigid = GetComponent<Rigidbody>( );
         if ( !rigid ) {
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start ( ) {
         _turbo_continue_time = _turbo_continue_max_time * 60;
+        _is_hit_debri = false;
 	}
 	
 	// Update is called once per frame
@@ -155,8 +158,12 @@ public class PlayerController : MonoBehaviour {
         if ( _before_state != STATE.STATE_TURBO && _state == STATE.STATE_TURBO ) {
             _turbo_continue_time = 0;
         }
+        if ( _is_hit_debri ) {
+            _state = STATE.STATE_CRASH;
+        }
         //Debug.Log( velocity.y );
         _before_state = _state;
+        _is_hit_debri = false;
     }
 
     void switchAnimation( ) {
@@ -187,6 +194,10 @@ public class PlayerController : MonoBehaviour {
 				anim.SetBool( "isReversal", true );
                 se.playSE( ( int )SEManager.SE.SE_GRAVITY );
 				break;
+            case STATE.STATE_CRASH:
+                anim.SetBool("isHoverCrash", true);
+                anim.SetBool("isCrash", true);
+                break;
             default:
                 resetAnimation( );
                 break;
@@ -201,10 +212,18 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isFall", false );
         anim.SetBool( "isLand", false );
         anim.SetBool( "isTurbo", false );
-		anim.SetBool( "isReversal", false );
+        anim.SetBool("isReversal", false);
+        anim.SetBool("isHoverCrash", false);
+        anim.SetBool("isCrash", false);
     }
 
     public bool isReversal( ) {
         return _jump_force.y < 0;
+    }
+
+    void OnCollisionEnter( Collision collision ) {
+        if (collision.collider.tag == "Debri") {
+            _is_hit_debri = true;
+        }
     }
 }
