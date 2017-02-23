@@ -5,30 +5,26 @@ using UnityEngine;
 public class RankingManage : MonoBehaviour {
 
     private const int MAX_RANK_NUM = 3;
-    private float[ ] _rank = new float[ MAX_RANK_NUM ];
+    private float[ ] _rank;
     private const string RANK_KEY = "ranking";
 
 	// Use this for initialization
-	void Start ( ) {
+	void Awake ( ) {
+        _rank = new float[MAX_RANK_NUM];
         for ( int i = 0; i < MAX_RANK_NUM; i++ ) {
             _rank[ i ] = 99;
         }
-        saveRanking( 10 );
-        saveRanking( 20 );
-        saveRanking( 5 );
-        getRanking( );
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ( ) {
+	    
     }
 
-    public void getRanking( ) {
+   public void resetRanking( ) {
         string ranking = PlayerPrefs.GetString( RANK_KEY );
         if ( ranking.Length > 0 ) {
             var _score = ranking.Split( "," [ 0 ] );
-            _rank = new float[ MAX_RANK_NUM ];
             for ( int i = 0; i < _score.Length && i < MAX_RANK_NUM; i++ ) {
                 _rank[ i ] = float.Parse( _score[ i ] );
             }
@@ -37,21 +33,21 @@ public class RankingManage : MonoBehaviour {
 
     public void saveRanking( float rank ) { 
         float _tmp = 0.0f;
-        string[ ] string_rank = new string[ MAX_RANK_NUM ];
-
-        for ( int i = 0; i < MAX_RANK_NUM; i++ ) {
+        for ( int i = 0 ; i < MAX_RANK_NUM; i++ ) {
             if ( _rank[ i ] > rank ) {
                 _tmp = _rank[ i ];
                 _rank[ i ] = rank;
                 rank = _tmp;
             }
         }
+        string[] string_rank = new string[MAX_RANK_NUM];
         for ( int i = 0; i < MAX_RANK_NUM; i++ ) {
             string_rank[ i ] = string.Format( "{0}", _rank[ i ] );
         }
         // 配列を文字列に変換して PlayerPrefs に格納
         string ranking_string = string.Join( ",", string_rank );
         PlayerPrefs.SetString( RANK_KEY, ranking_string );
+        PlayerPrefs.Save( );
     }
 
     public float getRank( int num ) {
