@@ -85,6 +85,7 @@
     <Compile Include="Assets\Script\Stage\CameraCotroller.cs" />
     <Compile Include="Assets\Script\Stage\GameManager.cs" />
     <Compile Include="Assets\Script\Stage\InputManager.cs" />
+    <Compile Include="Assets\Script\Stage\PlayerColorChange.cs" />
     <Compile Include="Assets\Script\Stage\PlayerController.cs" />
     <Compile Include="Assets\Script\StageSelect\StageSelectMain.cs" />
     <Compile Include="Assets\Script\Title\TitleManager.cs" />

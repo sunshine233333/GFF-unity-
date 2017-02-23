@@ -4,35 +4,35 @@ using UnityEngine;
 
 public class BackObjController : MonoBehaviour {
 
-    private const float ROTATE_VALUE = 0.1f;
+    private const float ROTATE_VALUE = 0.5f;
 
-    private GameObject _back_obj;
-    private Rigidbody _player;
+    private GameObject _player;
+    private Vector3 _player_to_backobj_pos;
 
+    private void Awake( ) {
+        _player = GameObject.Find( "Player" );
+    }
 
-	// Use this for initialization
-	void Start ( ) {
-        _back_obj = GetComponent<GameObject>( );
-		_player = GameObject.Find( "Player" ).GetComponent<Rigidbody>( );
+    // Use this for initialization
+    void Start ( ) {
+        _player_to_backobj_pos = _player.transform.position + transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update ( ) {
-		Vector3 player_force = _player.velocity;
-        if ( player_force.x == 0.0f ) {
+        FollowPlayer( );
+        RotateObj( );
+    }
+
+    private void FollowPlayer( ) {
+        Vector3 pos = new Vector3( _player.transform.position.x + _player_to_backobj_pos.x, _player_to_backobj_pos.y, _player_to_backobj_pos.z );
+		transform.position = pos;
+    }
+    private void RotateObj( ) {
+        if ( _player.GetComponent<Rigidbody>( ).velocity.x == 0 ) {
             return;
         }
-        FollowPlayer( player_force.x );
-        RotateObj( );
-	}
-
-    private void FollowPlayer( float value ) {
-        Vector3 _back_obj_pos = _back_obj.transform.position;
-        _back_obj_pos.x += value;
-        _back_obj.transform.position = _back_obj_pos;
+        transform.Rotate( new Vector3( 0, ROTATE_VALUE, 0 ) );
     }
 
-    private void RotateObj( ) {
-        _back_obj.transform.Rotate( new Vector3( 0, ROTATE_VALUE, 0 ) );
-    }
 }
