@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     private Vector3 _turbo_force = new Vector3( 200, 0, 0);
 
 	private GameObject _input;
+    private SEManager se;
 
     private float _hover_speed = 5.0f;
     private float _max_speed = 25.0f;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 	private bool _is_reversal = false;
     private bool _can_jump = true;
     private float _turbo_continue_time = -1;
+
     void Awake( ) {
         Rigidbody rigid = GetComponent<Rigidbody>( );
         if ( !rigid ) {
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour {
 		if ( !_input ) {
 			_input = ( GameObject )Instantiate( Resources.Load( "Prefab/Input" ) );
 		}
-
+        se = GetComponent<SEManager>( );
     }
 
 	void Start ( ) {
@@ -176,9 +178,11 @@ public class PlayerController : MonoBehaviour {
                 break;
             case STATE.STATE_TURBO:
                 anim.SetBool( "isTurbo", true );
+                se.playSE( ( int )SEManager.SE.SE_TRUBO );                
                 break;
 			case STATE.STATE_REVERSAL:
 				anim.SetBool( "isReversal", true );
+                se.playSE( ( int )SEManager.SE.SE_GRAVITY );
 				break;
             default:
                 resetAnimation( );
