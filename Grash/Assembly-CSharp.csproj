@@ -49,6 +49,7 @@
      <Compile Include="Assets\Script\Stage\CameraCotroller.cs" />
      <Compile Include="Assets\Script\Stage\InputManager.cs" />
      <Compile Include="Assets\Script\Stage\PlayerController.cs" />
+     <Compile Include="Assets\Script\StageSelect\StageSelectMain.cs" />
      <Compile Include="Assets\Script\Title\TitleManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
