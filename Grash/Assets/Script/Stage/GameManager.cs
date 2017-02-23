@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour {
                 updatePlay( );
                 break;
             case PHASE.PHASE_CLEAR:
+                updateClear( );
                 break;
         }
 	}
@@ -72,10 +73,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void updateClear( ) {
-        Vector3 player_velocioty = _player.GetComponent<Rigidbody>( ).velocity;
-        if ( player_velocioty != Vector3.zero ) {
-            return;
-        }
+
     }
 
     public PHASE getPhase( ) {
