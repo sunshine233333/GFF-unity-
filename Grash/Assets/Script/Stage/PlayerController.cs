@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
     private float _turbo_continue_time = -1;
 
     private bool _is_hit_debri = false;
+    private bool _is_hit_any = false;
 
     void Awake( ) {
         Rigidbody rigid = GetComponent<Rigidbody>( );
@@ -61,6 +62,7 @@ public class PlayerController : MonoBehaviour {
 	void Start ( ) {
         _turbo_continue_time = _turbo_continue_max_time * 60;
         _is_hit_debri = false;
+        _is_hit_any = false;
 	}
 	
 	// Update is called once per frame
@@ -135,8 +137,9 @@ public class PlayerController : MonoBehaviour {
         if ( velocity.x > _hover_speed ) {
             _state = STATE.STATE_HOVER;
         }
-        bool is_jump = ( ( velocity.y > 0 && _jump_force.y > 0 ) ||
-                        ( velocity.y < 0 && _jump_force.y < 0 ) );
+
+        bool is_up_vec = ( int )velocity.normalized.y * ( int )Physics.gravity.normalized.y < 0;
+        bool is_jump = is_up_vec && !_is_hit_any;
         if ( is_jump ) {
             _state = STATE.STATE_JUMP;
         }
@@ -144,7 +147,8 @@ public class PlayerController : MonoBehaviour {
 			_state = STATE.STATE_REVERSAL;
 		}
 
-        bool is_fall = ( !is_jump ) && ( Mathf.Abs( velocity.y ) > 1.0f ) ;
+        bool is_down_vec = ( int )velocity.normalized.y * ( int )Physics.gravity.normalized.y > 0;
+        bool is_fall = is_down_vec && !_is_hit_any;
         if ( is_fall ) {
             _state = STATE.STATE_FALL;
         }
@@ -164,6 +168,7 @@ public class PlayerController : MonoBehaviour {
         //Debug.Log( velocity.y );
         _before_state = _state;
         _is_hit_debri = false;
+        _is_hit_any = false;
     }
 
     void switchAnimation( ) {
@@ -225,5 +230,6 @@ public class PlayerController : MonoBehaviour {
         if (collision.collider.tag == "Debri") {
             _is_hit_debri = true;
         }
+        _is_hit_any = true;
     }
 }
