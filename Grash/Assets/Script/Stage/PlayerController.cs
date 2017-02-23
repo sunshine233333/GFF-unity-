@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 	private GameObject _input;
 
     private float _hover_speed = 5.0f;
-    private float _max_speed = 30.0f;
+    private float _max_speed = 25.0f;
     private float _turbo_continue_max_time = 0.5f;
     private float _max_jump_force = 5.0f;
 
