@@ -18,7 +18,16 @@ public class Timer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update ( ) {
+        if ( _is_start_game ) {
+            addTime( );
+        }
+        writeTime( );
+	}
+    private void addTime( ) {
         _time++;
+    }
+
+    private void writeTime( ) {
         string text = "Time:";
         int sec = ( int ) ( _time / 60 );
         if ( Mathf.Log10( sec ) < 1 ) {
@@ -34,13 +43,14 @@ public class Timer : MonoBehaviour {
             text += "0";
         }
         time_text.text = text;
-	}
+    }
 
     public void setGameStart( ) {
         _is_start_game = true;
     }
 
     public void setGameEnd( ) {
+        _is_start_game = false;
         _is_end_game = true;
     }
 }

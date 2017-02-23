@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BackObjController : MonoBehaviour {
-
     private const float ROTATE_VALUE = 0.5f;
 
     private GameObject _player;

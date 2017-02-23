@@ -61,13 +61,15 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update ( ) {
-        checkDeviceInput( );
-        moveUpdate();
+        GameManager gm = GameObject.Find( "GameManager" ).GetComponent<GameManager>( );
+        if ( gm.getState( ) == GameManager.STATE.STATE_PLAY ) {
+            checkDeviceInput( );
+        }
+        moveUpdate( );
         switchState( );
         switchAnimation( );
 
         _velocity = GetComponent<Rigidbody>( ).velocity;
-
 	}
 
     void moveUpdate( ) { 
