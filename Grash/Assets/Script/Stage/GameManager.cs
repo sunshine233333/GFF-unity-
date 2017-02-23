@@ -79,10 +79,12 @@ public class GameManager : MonoBehaviour {
     }
 
     private void updateClear( ) {
-        string result_name = "Result";
-        int result_num = stage_num + 1;
-        result_name += result_num;
-        SceneManager.LoadScene( result_name );
+        if ( _player.GetComponent<Rigidbody>( ).velocity == Vector3.zero ) {
+            string result_name = "Result";
+            int result_num = stage_num + 1;
+            result_name += result_num;
+            SceneManager.LoadScene( result_name );
+        }
     }
 
     public PHASE getPhase( ) {
