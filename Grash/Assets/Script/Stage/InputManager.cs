@@ -120,7 +120,7 @@ public class InputManager : MonoBehaviour {
 		default:
 			break;
 		}
-        Debug.Log ( touch_key );
+        //Debug.Log ( touch_key );
 		return Input.GetKeyDown ( key ) || ( touch_key && !before_key );
 	}
 

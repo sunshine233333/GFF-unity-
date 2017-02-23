@@ -13,7 +13,7 @@ public class RankingManage : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake ( ) {
-        _rank = new float[MAX_RANK_NUM];
+        _rank = new float[ MAX_RANK_NUM ];
         for ( int i = 0; i < MAX_RANK_NUM; i++ ) {
             _rank[ i ] = 99;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     public enum PHASE {
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour {
         PHASE_PLAY,
         PHASE_CLEAR
     }
+    public int stage_num;
 
     private const int SPRITE_MAX = 4;
     public Sprite[] CountSprite = new Sprite[ SPRITE_MAX ];
@@ -68,12 +70,19 @@ public class GameManager : MonoBehaviour {
             _phase = PHASE.PHASE_CLEAR;
             Timer timer = _time.GetComponent<Timer>( );
             timer.setGameEnd( );
+            RankingManage rank = GetComponent< RankingManage >( );
+            rank.resetRanking( stage_num );
+            rank.saveRanking( stage_num, timer.getTime( ) / 60 );
+            //Debug.Log( rank.getRank( 0 ) );
         }
 
     }
 
     private void updateClear( ) {
-
+        string result_name = "Result";
+        int result_num = stage_num + 1;
+        result_name += result_num;
+        SceneManager.LoadScene( result_name );
     }
 
     public PHASE getPhase( ) {
