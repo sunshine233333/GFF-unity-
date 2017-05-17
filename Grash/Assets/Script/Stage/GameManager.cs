@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
         switch ( _phase ) {
             case PHASE.PHASE_READY:
                 ReadyCount( );
+                _player.GetComponent<PlayerController>( ).resetPlayer( );
                 break;
             case PHASE.PHASE_PLAY:
                 updatePlay( );

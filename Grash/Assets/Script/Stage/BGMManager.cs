@@ -14,10 +14,10 @@ public class BGMManager : MonoBehaviour {
     private AudioSource _souce;
     private int _before_se;
 
-	void Start () {
+	void Start ( ) {
         _souce = GetComponent<AudioSource>( );
         _souce.loop = true;
-        //playBGM( 0 );
+        playBGM( 0 );
 	}
 	
 	// Update is called once per frame

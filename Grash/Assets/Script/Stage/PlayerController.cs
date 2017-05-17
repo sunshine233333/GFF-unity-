@@ -63,10 +63,11 @@ public class PlayerController : MonoBehaviour {
         _turbo_continue_time = _turbo_continue_max_time * 60;
         _is_hit_debri = false;
         _is_hit_any = false;
+	    _is_reversal = false;
 	}
 	
 	// Update is called once per frame
-	void Update ( ) {
+	void FixedUpdate ( ) {
         GameManager gm = GameObject.Find( "GameManager" ).GetComponent<GameManager>( );
         if ( gm.getPhase( ) == GameManager.PHASE.PHASE_PLAY ) {
             checkDeviceInput( );
@@ -164,6 +165,7 @@ public class PlayerController : MonoBehaviour {
         }
         if ( _is_hit_debri ) {
             _state = STATE.STATE_CRASH;
+            resetVerocity( );
         }
         //Debug.Log( velocity.y );
         _before_state = _state;
@@ -200,8 +202,8 @@ public class PlayerController : MonoBehaviour {
                 se.playSE( ( int )SEManager.SE.SE_GRAVITY );
 				break;
             case STATE.STATE_CRASH:
-                anim.SetBool("isHoverCrash", true);
-                anim.SetBool("isCrash", true);
+                anim.SetBool("isHoverCrash", true );
+                anim.SetBool( "isCrash", true );
                 break;
             default:
                 resetAnimation( );
@@ -209,7 +211,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void resetAnimation( ) {
+    private void resetAnimation( ) {
         Animator anim = gameObject.GetComponent<Animator>( );
         anim.SetBool( "isRun", false );
         anim.SetBool( "isHover", false );
@@ -217,9 +219,21 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool( "isFall", false );
         anim.SetBool( "isLand", false );
         anim.SetBool( "isTurbo", false );
-        anim.SetBool("isReversal", false);
-        anim.SetBool("isHoverCrash", false);
-        anim.SetBool("isCrash", false);
+        anim.SetBool( "isReversal", false );
+        anim.SetBool( "isHoverCrash", false );
+        anim.SetBool( "isCrash", false );
+    }
+
+
+    private void resetState( ) {
+        _is_hit_debri = false;
+        _is_hit_any = false;
+	    _is_reversal = false;
+    }
+
+    public void resetPlayer( ) {
+        resetState( );
+        resetAnimation( );
     }
 
     public bool isReversal( ) {
@@ -231,5 +245,9 @@ public class PlayerController : MonoBehaviour {
             _is_hit_debri = true;
         }
         _is_hit_any = true;
+    }
+
+    private void resetVerocity( ) {
+        gameObject.GetComponent<Rigidbody>( ).velocity = Vector3.zero;
     }
 }

@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour {
 
     private float _time;
     private bool _is_start_game = false;
+	private bool _is_reversal = false;
     private bool _is_end_game = false;
     private Text time_text;
 
